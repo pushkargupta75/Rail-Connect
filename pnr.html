@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Railway PNR Status Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .pnr-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 500px;
+            padding: 30px;
+        }
+
+        .pnr-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .pnr-input-group {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .pnr-input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px 0 0 5px;
+        }
+
+        .pnr-check-btn {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+        }
+
+        .pnr-result {
+            display: none;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            padding: 20px;
+        }
+
+        .pnr-detail {
+            margin-bottom: 10px;
+        }
+
+        .chart-status {
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .passenger-list {
+            border-top: 1px solid #ddd;
+            padding-top: 15px;
+        }
+
+        .passenger-header {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .passenger-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .status-confirmed {
+            color: green;
+        }
+
+        .status-waiting {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="pnr-container">
+        <div class="pnr-header">
+            <h2>PNR Status Checker</h2>
+        </div>
+        
+        <div class="pnr-input-group">
+            <input 
+                type="text" 
+                id="pnrInput" 
+                class="pnr-input" 
+                placeholder="Enter 10-digit PNR Number" 
+                maxlength="10"
+            >
+            <button class="pnr-check-btn" id="checkPnrBtn">Check Status</button>
+        </div>
+
+        <div id="pnrResult" class="pnr-result">
+            <div class="chart-status" id="chartStatus"></div>
+            
+            <div class="pnr-detail">
+                <strong>Train Number:</strong> <span id="trainNumber"></span>
+            </div>
+            
+            <div class="pnr-detail">
+                <strong>Train Name:</strong> <span id="trainName"></span>
+            </div>
+            
+            <div class="pnr-detail">
+                <strong>Journey Date:</strong> <span id="journeyDate"></span>
+            </div>
+            
+            <div class="pnr-detail">
+                <strong>From Station:</strong> <span id="fromStation"></span>
+            </div>
+            
+            <div class="pnr-detail">
+                <strong>To Station:</strong> <span id="toStation"></span>
+            </div>
+
+            <div class="passenger-list">
+                <div class="passenger-header">
+                    <span>Passenger</span>
+                    <span>Seat/Berth</span>
+                    <span>Status</span>
+                </div>
+                <div id="passengerDetails"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const pnrInput = document.getElementById('pnrInput');
+            const checkPnrBtn = document.getElementById('checkPnrBtn');
+            const pnrResult = document.getElementById('pnrResult');
+            
+            // Reference elements for displaying PNR details
+            const chartStatus = document.getElementById('chartStatus');
+            const trainNumber = document.getElementById('trainNumber');
+            const trainName = document.getElementById('trainName');
+            const journeyDate = document.getElementById('journeyDate');
+            const fromStation = document.getElementById('fromStation');
+            const toStation = document.getElementById('toStation');
+            const passengerDetails = document.getElementById('passengerDetails');
+
+            // Mock PNR data (simulating a database)
+            const pnrDatabase = {
+                '1234567890': {
+                    chartPrepared: true,
+                    trainNumber: '12345',
+                    trainName: 'Rajdhani Express',
+                    journeyDate: '15-12-2024',
+                    fromStation: 'Delhi',
+                    toStation: 'Mumbai',
+                    passengers: [
+                        { name: 'Rahul Kumar', seat: 'B1, 45', status: 'Confirmed' },
+                        { name: 'Priya Singh', seat: 'B1, 46', status: 'Confirmed' },
+                        { name: 'Amit Sharma', seat: 'WL 3', status: 'Waiting List' }
+                    ]
+                },
+                '9876543210': {
+                    chartPrepared: false,
+                    trainNumber: '54321',
+                    trainName: 'Shatabdi Express',
+                    journeyDate: '20-12-2024',
+                    fromStation: 'Mumbai',
+                    toStation: 'Pune',
+                    passengers: []
+                }
+            };
+
+            // PNR Status Check Function
+            function checkPnrStatus(pnrNumber) {
+                // Reset previous results
+                pnrResult.style.display = 'none';
+                
+                // Validate PNR Number
+                if (!/^\d{10}$/.test(pnrNumber)) {
+                    alert('Please enter a valid 10-digit PNR number');
+                    return;
+                }
+
+                // Retrieve PNR Details
+                const pnrData = pnrDatabase[pnrNumber];
+
+                if (pnrData) {
+                    // Display PNR Result
+                    pnrResult.style.display = 'block';
+
+                    // Chart Preparation Status
+                    chartStatus.innerHTML = pnrData.chartPrepared 
+                        ? '<span class="status-confirmed">Chart Prepared</span>' 
+                        : '<span class="status-waiting">Chart Not Prepared</span>';
+
+                    // Train Details
+                    trainNumber.textContent = pnrData.trainNumber;
+                    trainName.textContent = pnrData.trainName;
+                    journeyDate.textContent = pnrData.journeyDate;
+                    fromStation.textContent = pnrData.fromStation;
+                    toStation.textContent = pnrData.toStation;
+
+                    // Passenger Details
+                    passengerDetails.innerHTML = pnrData.passengers.map(passenger => `
+                        <div class="passenger-row">
+                            <span>${passenger.name}</span>
+                            <span>${passenger.seat}</span>
+                            <span class="status-${passenger.status.toLowerCase().replace(' ', '-')}">
+                                ${passenger.status}
+                            </span>
+                        </div>
+                    `).join('');
+                } else {
+                    alert('PNR Number not found. Please check and try again.');
+                }
+            }
+
+            // Event Listeners
+            checkPnrBtn.addEventListener('click', () => {
+                checkPnrStatus(pnrInput.value);
+            });
+
+            pnrInput.addEventListener('keypress', (event) => {
+                if (event.key === 'Enter') {
+                    checkPnrStatus(pnrInput.value);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

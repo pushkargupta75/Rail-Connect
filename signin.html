@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Railway User Sign In</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #007bff 0%, #00c6ff 100%);
+        }
+
+        .signin-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 400px;
+        }
+
+        .signin-container h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #666;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+
+        .captcha-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .captcha-canvas {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .captcha-refresh {
+            cursor: pointer;
+            color: #007bff;
+            font-size: 1.5em;
+        }
+
+        .signin-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .signin-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 0.8em;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .signup-link a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 40px;
+            cursor: pointer;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="signin-container">
+        <h2>Railway User Sign In</h2>
+        <form id="signinForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+                <div id="usernameError" class="error-message">Username is required</div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+                <span class="password-toggle" id="passwordToggle">👁️</span>
+                <div id="passwordError" class="error-message">Password is required</div>
+            </div>
+
+            <div class="form-group">
+                <label>Captcha Verification</label>
+                <div class="captcha-container">
+                    <canvas id="captchaCanvas" width="150" height="50" class="captcha-canvas"></canvas>
+                    <span id="refreshCaptcha" class="captcha-refresh">↻</span>
+                </div>
+                <input type="text" id="captchaInput" placeholder="Enter Captcha" required>
+                <div id="captchaError" class="error-message">Incorrect Captcha</div>
+            </div>
+
+            <button type="submit" class="signin-btn">Sign In</button>
+
+            <div class="signup-link">
+                Don't have an account? <a href="signup.html">Sign Up</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Captcha Generation Class
+        class CaptchaGenerator {
+            constructor(canvas) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d');
+                this.captchaText = '';
+            }
+
+            generateCaptcha() {
+                // Clear previous captcha
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Generate random text
+                const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                this.captchaText = Array.from({length: 6}, () => 
+                    characters.charAt(Math.floor(Math.random() * characters.length))).join('');
+                
+                // Draw background
+                this.ctx.fillStyle = '#f0f0f0';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Draw text with some noise
+                this.ctx.font = '30px Arial';
+                this.ctx.fillStyle = '#333';
+                
+                // Add some random lines for complexity
+                for (let i = 0; i < 5; i++) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(Math.random() * this.canvas.width, Math.random() * this.canvas.height);
+                    this.ctx.lineTo(Math.random() * this.canvas.width, Math.random() * this.canvas.height);
+                    this.ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+                    this.ctx.stroke();
+                }
+                
+                // Draw captcha text with slight rotation
+                this.ctx.save();
+                this.ctx.translate(20, 35);
+                this.ctx.rotate(-0.1);
+                this.ctx.fillText(this.captchaText, 0, 0);
+                this.ctx.restore();
+            }
+
+            validateCaptcha(userInput) {
+                return userInput.toUpperCase() === this.captchaText;
+            }
+        }
+
+        // Form Validation and Interactions
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('signinForm');
+            const username = document.getElementById('username');
+            const password = document.getElementById('password');
+            const captchaCanvas = document.getElementById('captchaCanvas');
+            const captchaInput = document.getElementById('captchaInput');
+            const refreshCaptcha = document.getElementById('refreshCaptcha');
+            const passwordToggle = document.getElementById('passwordToggle');
+
+            // Error message elements
+            const usernameError = document.getElementById('usernameError');
+            const passwordError = document.getElementById('passwordError');
+            const captchaError = document.getElementById('captchaError');
+
+            // Create Captcha Generator
+            const captchaGenerator = new CaptchaGenerator(captchaCanvas);
+            captchaGenerator.generateCaptcha();
+
+            // Refresh Captcha
+            refreshCaptcha.addEventListener('click', () => {
+                captchaGenerator.generateCaptcha();
+                captchaInput.value = '';
+            });
+
+            // Password Toggle Visibility
+            passwordToggle.addEventListener('click', () => {
+                if (password.type === 'password') {
+                    password.type = 'text';
+                } else {
+                    password.type = 'password';
+                }
+            });
+
+            // Validation Functions
+            const validateUsername = () => {
+                const isValid = username.value.trim() !== '';
+                usernameError.style.display = isValid ? 'none' : 'block';
+                return isValid;
+            };
+
+            const validatePassword = () => {
+                const isValid = password.value.trim() !== '';
+                passwordError.style.display = isValid ? 'none' : 'block';
+                return isValid;
+            };
+
+            const validateCaptcha = () => {
+                const isValid = captchaGenerator.validateCaptcha(captchaInput.value);
+                captchaError.style.display = isValid ? 'none' : 'block';
+                return isValid;
+            };
+
+            // Real-time validation
+            username.addEventListener('input', validateUsername);
+            password.addEventListener('input', validatePassword);
+
+            // Form Submission
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const isUsernameValid = validateUsername();
+                const isPasswordValid = validatePassword();
+                const isCaptchaValid = validateCaptcha();
+
+                if (isUsernameValid && isPasswordValid && isCaptchaValid) {
+                    // Simulate sign-in process
+                    alert('Sign In Successful!');
+                    // Here you would typically send data to backend for authentication
+                }
+            });
+        });
+    </script>
+</body>
+</html>

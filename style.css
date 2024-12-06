@@ -1,0 +1,246 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #1F2833;
+    
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 50px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px #592F69
+}
+.ins{
+    margin-top: 0px;
+}
+.next{
+    display: flex;
+}
+
+.logo {
+    height: 50px;
+}
+.img{
+    
+}
+.nav-links {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+.ticket-search-box {
+    width: 80%;
+    margin: 30px auto;
+    background-color: #66FCF1;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+.bullet{
+    border-radius: 50%;
+}
+#train{
+    align-content: left;
+}
+.ticket-search-box input, 
+.ticket-search-box select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #66FCF1;
+    border-radius: 5px;
+}
+
+.why-book-section {
+    text-align: center;
+    padding: 50px 0;
+    color: white;
+}
+
+.why-book-points {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.why-book-point {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.why-book-point img {
+    width: 50px;
+    height: 50px;
+}
+
+.mobile-showcase {
+    display: flex;
+    justify-content: center;
+    margin: 50px 0;
+    
+}
+
+.mobile-showcase img {
+    max-width: 300px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    border-radius: 10%;
+}
+
+.holiday-packages {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 50px 0;
+}
+
+.package {
+    background-color: #66FCF1;
+    width: 400px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.live-train-tracking {
+    background-color: #007bff;
+    color: #66FCF1;
+    text-align: center;
+    padding: 20px;
+    margin: 30px 0;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    padding: 30px;
+    display: flex;
+    justify-content: space-around;
+}
+.ticket-form {
+    background-color: #66FCF1;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    width: 100%;
+    max-width: 450px;
+    margin-top: 100px;
+    margin-left: 1000px;
+}
+
+
+.form-title {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 25px;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #34495e;
+    font-weight: 600;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-wrapper i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #7f8c8d;
+}
+#shim{
+    height:100px;
+    width:100px;
+}
+#dham{
+    height:100px;
+    width:100px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 12px 12px 40px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #23282b;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.custom-select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    appearance: none;
+    background: white url('data:image/svg+xml;utf8,<svg fill="%23444" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>') no-repeat right 12px center;
+    background-size: 24px;
+    transition: all 0.3s ease;
+}
+
+.custom-select:focus {
+    outline: none;
+    border-color: #3498db;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.btn-search {
+    width: 100%;
+    padding: 12px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-search:hover {
+    background-color: #2980b9;
+}
+
+.btn-search:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.4);
+}
+
+@media (max-width: 480px) {
+    .ticket-form {
+        margin: 20px;
+        padding: 20px;
+    }
+}

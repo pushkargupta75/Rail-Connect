@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+< lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Railway Management System</title>
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<>  
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <img src="logo.jpg" alt="Railway Logo" class="logo">
+        <div class="nav-links">
+            <a href="#">HOME</a>
+            <a href="pnr.html">CHECK PNR STATUS</a>
+            <a href="#">TRAIN TRACKING</a>
+            <a href="ecater.html">E CATERING</a>
+            <a href="signin.html">SIGN IN</a>
+            <a href="signup.html">SIGN UP</a>
+        </div>
+    </nav>
+    
+    
+
+    <!-- Ticket Search Box -->
+    <div class="ins">
+        <div class="img">
+            <img src="train.jpg" align="left">
+        </div>
+        <div class="ticket-form">
+            <h2 class="form-title">Train Ticket Booking</h2>
+            
+            <div class="form-group">
+                <label for="from-station">From Station</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <input type="text" id="from-station" class="form-control" placeholder="Starting Station" required>
+                </div>
+            </div>
+    
+            <div class="form-group">
+                <label for="to-station">To Station</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <input type="text" id="to-station" class="form-control" placeholder="Destination Station" required>
+                </div>
+            </div>
+    
+            <div class="form-group">
+                <label for="travel-date">Travel Date</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-calendar-alt"></i>
+                    <input type="date" id="travel-date" class="form-control" required>
+                </div>
+            </div>
+    
+            <div class="form-group">
+                <label for="passenger-class">Passenger Class</label>
+                <select id="passenger-class" class="custom-select" required>
+                    <option value="">Select Class</option>
+                    <option value="first">First Class</option>
+                    <option value="second">Second Class</option>
+                    <option value="sleeper">Sleeper</option>
+                    <option value="ac">AC Chair Car</option>
+                </select>
+            </div>
+    
+            <div class="form-group">
+                <label for="passenger-category">Passenger Category</label>
+                <select id="passenger-category" class="custom-select" required>
+                    <option value="">Select Category</option>
+                    <option value="general">General</option>
+                    <option value="senior">Senior Citizen</option>
+                    <option value="student">Student</option>
+                    <option value="armed-forces">Armed Forces</option>
+                    <option value="disabled">Disabled</option>
+                </select>
+            </div>
+    
+            <button id="search-trains" class="btn-search">Search Trains</button>
+        </div>
+    </div>
+    
+
+    <!-- Why Book With Us Section -->
+     
+    <div class="why-book-section">
+        <h2>Why Book Tickets With Us</h2>
+        <div class="why-book-points">
+            <div class="why-book-point">
+                <img src="confirm.jpg" alt="Confirmed Tickets" class="bullet">
+                <span>GET CONFIRMED TICKETS</span>
+            </div>
+            <div class="why-book-point">
+                <img src="payment.jpg" alt="Secure Payments" class="bullet">
+                <span>UPI ENABLED SECURED PAYMENTS</span>
+            </div>
+            <div class="why-book-point">
+                <img src="cancel.jpg" alt="Free Cancellation" class="bullet">
+                <span>FREE CANCELLATION</span>
+            </div>
+            <div class="why-book-point">
+                <img src="live.jpg" alt="Train Tracking" class="bullet">
+                <span>CURRENT TRAIN TRACKING</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Showcase -->
+    <div class="mobile-showcase">
+        <img src="phone.jpg" alt="Mobile App UI">
+    </div>
+
+    <!-- Holiday Packages -->
+    <div class="holiday-packages">
+        <div class="package">
+            <img src="shim.jpg" alt="" id="shim">
+            <h3>Kashmir Paradise Package</h3>
+            <p>Explore the beautiful valleys of Kashmir</p>
+            <p>Duration: 7 Days</p>
+            <p>Price: ₹25,000 per person</p>
+        </div>
+        <div class="package">
+            <img src="dham.jpg" alt="" id="dham">
+            <h3>Char Dham Yatra Package</h3>
+            <p>Spiritual journey to all 4 holy destinations</p>
+            <p>Duration: 12 Days</p>
+            <p>Price: ₹45,000 per person</p>
+        </div>
+    </div>
+
+    <!-- Live Train Tracking -->
+    <div class="live-train-tracking">
+        <h2>Live Train Tracking</h2>
+        <p>Track your train in real-time with our advanced tracking system</p>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div>
+            <h4>Contact Us</h4>
+            <p>Email: support@railwaysystem.com</p>
+            <p>Phone: 1800-RAILWAY</p>
+        </div>
+        <div>
+            <h4>Quick Links</h4>
+            <a href="#">About Us</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Privacy Policy</a>
+        </div>
+        <div>
+            <h4>Follow Us</h4>
+            <a href="#">Facebook</a>
+            <a href="#">Twitter</a>
+            <a href="#">Instagram</a>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
