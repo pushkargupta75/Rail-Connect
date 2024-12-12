@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>South India Trip Planner</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Background Gradient */
+        body {
+            background: linear-gradient(to right, #FF7F50, #FF6347, #FFD700);
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Keyframe for Fade-in */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .animate-fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+
+        /* Hover effects for destination cards */
+        .destination-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .destination-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Transition for the planner form */
+        .form-section {
+            transition: transform 0.5s ease;
+        }
+
+        /* Custom Styling for Buttons */
+        .btn {
+            background-color: #FF6347;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #FF4500;
+        }
+
+        /* Styled Card Containers */
+        .card-container {
+            display: grid;
+            margin-left: 180px;
+            justify-content: space-around;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .card-container .destination-card {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-5xl font-bold text-center text-white mb-12 animate-fade-in">Explore South India</h1>
+
+        <!-- South India Destinations -->
+        
+        <div class="card-container">
+            <div class="destination-card animate-fade-in">
+                <img src="chennai.jpeg" alt="Chennai" class="w-full h-48 object-cover rounded-lg mb-2">
+                <h3 class="text-2xl font-semibold text-orange-600">Chennai</h3>
+                <p class="text-gray-600">Cultural Hub & Beaches</p>
+            </div>
+            <div class="destination-card animate-fade-in">
+                <img src="madurai.jpeg" alt="Madurai" class="w-full h-48 object-cover rounded-lg mb-2">
+                <h3 class="text-2xl font-semibold text-orange-600">Madurai</h3>
+                <p class="text-gray-600">Ancient Temples & Culture</p>
+            </div>
+            <div class="destination-card animate-fade-in">
+                <img src="coimbaore.jpg" alt="Coimbatore" class="w-full h-48 object-cover rounded-lg mb-2">
+                <h3 class="text-2xl font-semibold text-orange-600">Coimbatore</h3>
+                <p class="text-gray-600">City of Temples & Hills</p>
+            </div>
+            <br>
+            <div class="destination-card animate-fade-in">
+                <img src="mysore.jpeg" alt="Mysore" class="w-full h-48 object-cover rounded-lg mb-2">
+                <h3 class="text-2xl font-semibold text-orange-600">Mysore</h3>
+                <p class="text-gray-600">Palaces & Heritage</p>
+            </div>
+            <div class="destination-card animate-fade-in">
+                <img src="ooty.jpg" alt="Ooty" class="w-full h-48 object-cover rounded-lg mb-2">
+                <h3 class="text-2xl font-semibold text-orange-600">Ooty</h3>
+                <p class="text-gray-600">Hill Station & Tea Gardens</p>
+            </div>
+            <div class="destination-card animate-fade-in">
+                <img src="kochi.jpg" alt="Kochi" class="w-full h-48 object-cover rounded-lg mb-2">
+                <h3 class="text-2xl font-semibold text-orange-600">Kochi</h3>
+                <p class="text-gray-600">Backwaters & Heritage</p>
+            </div>
+        </div>
+  
+
+        <!-- Trip Planner Form -->
+        <div class="mt-12 bg-white shadow-lg rounded-lg p-8 form-section">
+            <h2 class="text-3xl font-bold text-center text-purple-800 mb-8">Plan Your Trip</h2>
+            <form id="trip-form" class="grid md:grid-cols-2 gap-8">
+                <div>
+                    <label class="block text-gray-700 font-bold mb-2">Number of Passengers</label>
+                    <input type="number" id="passengers" min="1" max="10" placeholder="Enter Number of Passengers"
+                        class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-bold mb-2">Number of Days</label>
+                    <input type="number" id="days" min="1" max="30" placeholder="Enter Trip Duration (Days)"
+                        class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-bold mb-2">Accommodation Type</label>
+                    <select id="accommodation" class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <option>Budget Hotel</option>
+                        <option>Mid-range Hotel</option>
+                        <option>Luxury Resort</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-bold mb-2">Preferred Train</label>
+                    <select id="train-type" class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500">
+                        <option>Express</option>
+                        <option>Superfast</option>
+                        <option>Shatabdi</option>
+                    </select>
+                </div>
+            </form>
+            <div class="text-center mt-8">
+                <button id="calculate-trip" class="btn">Calculate Trip Cost</button>
+            </div>
+            <div id="trip-cost" class="mt-8 text-center hidden">
+                <h3 class="text-2xl font-bold text-purple-800">Trip Details</h3>
+                <p id="total-cost" class="text-xl text-green-700 mt-4"></p>
+                <div id="cost-breakdown" class="mt-4 text-gray-700"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('calculate-trip').addEventListener('click', function() {
+            const passengers = document.getElementById('passengers').value;
+            const days = document.getElementById('days').value;
+            const accommodation = document.getElementById('accommodation').value;
+            const trainType = document.getElementById('train-type').value;
+
+            if (!passengers || !days || !accommodation || !trainType) {
+                alert('Please fill all the fields!');
+                return;
+            }
+
+            const baseCosts = {
+                'Chennai': 5000,
+                'Madurai': 4000,
+                'Coimbatore': 3500,
+                'Mysore': 4500,
+                'Ooty': 5000,
+                'Kochi': 5500
+            };
+
+            const accommodationCosts = {
+                'Budget Hotel': 2000,
+                'Mid-range Hotel': 4000,
+                'Luxury Resort': 7000
+            };
+
+            const trainCosts = {
+                'Express': 1500,
+                'Superfast': 2500,
+                'Shatabdi': 3500
+            };
+
+            let totalCost = 0;
+            totalCost += (baseCosts['Chennai'] + baseCosts['Madurai'] + baseCosts['Coimbatore']) * days;
+            totalCost += accommodationCosts[accommodation] * days;
+            totalCost += trainCosts[trainType] * passengers;
+
+            const tripCostElement = document.getElementById('trip-cost');
+            const totalCostElement = document.getElementById('total-cost');
+            const costBreakdownElement = document.getElementById('cost-breakdown');
+
+            tripCostElement.classList.remove('hidden');
+            totalCostElement.textContent = `Total Trip Cost: ₹${totalCost.toLocaleString()}`;
+
+            costBreakdownElement.innerHTML = `
+                <p>Passengers: ${passengers}</p>
+                <p>Duration: ${days} days</p>
+                <p>Accommodation: ${accommodation}</p>
+                <p>Train: ${trainType}</p>
+            `;
+        });
+    </script>
+</body>
+</html>

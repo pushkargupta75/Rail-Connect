@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kashmir Paradise - Trip Planner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #e0f2f1, #b2dfdb);
+            font-family: 'Roboto', sans-serif;
+            color: #333; /* Dark text for better contrast */
+        }
+        .location-card {
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .location-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 1s ease-out;
+        }
+        .glassy-background {
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(10px);
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .button-gradient {
+            background: linear-gradient(to right, #4CAF50, #8BC34A);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background 0.3s ease-in-out;
+        }
+        .button-gradient:hover {
+            background: linear-gradient(to right, #388E3C, #4CAF50);
+        }
+        .text-highlight {
+            color: #004d40;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-6">
+    <div class="container mx-auto">
+        <h1 class="text-5xl font-bold text-center text-gray-800 mb-8 animate-fade-in">
+            Discover Kashmir - Heaven on Earth
+        </h1>
+
+        <!-- Kashmir Destinations -->
+        <div class="grid md:grid-cols-4 gap-8 mb-12">
+            <!-- Srinagar -->
+            <div class="location-card bg-white rounded-lg p-4 text-center">
+                <img src="srinagar.jpeg" alt="Srinagar" class="w-full h-48 object-cover rounded-lg mb-4">
+                <h2 class="text-2xl font-semibold text-teal-800">Srinagar</h2>
+                <p class="text-gray-600">Dal Lake & Mughal Gardens</p>
+                <button onclick="selectDestination('Srinagar')" class="mt-4 button-gradient hover:bg-teal-600">
+                    Select
+                </button>
+            </div>
+
+            <!-- Gulmarg -->
+            <div class="location-card bg-white rounded-lg p-4 text-center">
+                <img src="gulmarg.jpg" alt="Gulmarg" class="w-full h-48 object-cover rounded-lg mb-4">
+                <h2 class="text-2xl font-semibold text-green-800">Gulmarg</h2>
+                <p class="text-gray-600">Skiing & Gondola Rides</p>
+                <button onclick="selectDestination('Gulmarg')" class="mt-4 button-gradient hover:bg-green-600">
+                    Select
+                </button>
+            </div>
+
+            <!-- Pahalgam -->
+            <div class="location-card bg-white rounded-lg p-4 text-center">
+                <img src="pahalgam.jpeg" alt="Pahalgam" class="w-full h-48 object-cover rounded-lg mb-4">
+                <h2 class="text-2xl font-semibold text-teal-700">Pahalgam</h2>
+                <p class="text-gray-600">Valley of Shepherds</p>
+                <button onclick="selectDestination('Pahalgam')" class="mt-4 button-gradient hover:bg-teal-600">
+                    Select
+                </button>
+            </div>
+
+            <!-- Sonmarg -->
+            <div class="location-card bg-white rounded-lg p-4 text-center">
+                <img src="sonmarg.jpg" alt="Sonmarg" class="w-full h-48 object-cover rounded-lg mb-4">
+                <h2 class="text-2xl font-semibold text-indigo-800">Sonmarg</h2>
+                <p class="text-gray-600">Meadow of Gold</p>
+                <button onclick="selectDestination('Sonmarg')" class="mt-4 button-gradient hover:bg-indigo-600">
+                    Select
+                </button>
+            </div>
+        </div>
+
+        <!-- Trip Planner Section -->
+        <div id="tripPlannerSection" class="hidden animate-fade-in">
+            <div class="glassy-background shadow-lg p-8">
+                <h2 class="text-3xl font-bold text-center mb-8 text-teal-900">
+                    Craft Your Kashmir Journey
+                </h2>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Trip Details Form -->
+                    <div>
+                        <div class="mb-6">
+                            <h3 class="text-xl font-semibold mb-4 text-teal-700">Selected Destinations</h3>
+                            <div id="selectedDestinationsDisplay" class="flex flex-wrap gap-2"></div>
+                        </div>
+
+                        <form id="tripForm" class="space-y-4">
+                            <div>
+                                <label class="block mb-2">Number of Travelers</label>
+                                <input 
+                                    type="number" 
+                                    id="travelerCount" 
+                                    min="1" 
+                                    max="10" 
+                                    class="w-full px-4 py-2 border rounded-lg"
+                                    onchange="calculateTripCost()"
+                                >
+                            </div>
+
+                            <div>
+                                <label class="block mb-2">Travel Mode</label>
+                                <select 
+                                    id="travelMode" 
+                                    class="w-full px-4 py-2 border rounded-lg"
+                                    onchange="calculateTripCost()"
+                                >
+                                    <option value="train">Train</option>
+                                    <option value="flight">Flight</option>
+                                    <option value="bus">Bus</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block mb-2">Accommodation</label>
+                                <select 
+                                    id="accommodationType" 
+                                    class="w-full px-4 py-2 border rounded-lg"
+                                    onchange="calculateTripCost()"
+                                >
+                                    <option value="budget">Budget Hotel</option>
+                                    <option value="standard">Standard Hotel</option>
+                                    <option value="luxury">Luxury Resort</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block mb-2">Trip Duration (Days)</label>
+                                <input 
+                                    type="number" 
+                                    id="tripDuration" 
+                                    min="3" 
+                                    max="10" 
+                                    class="w-full px-4 py-2 border rounded-lg"
+                                    onchange="calculateTripCost()"
+                                >
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Cost Breakdown -->
+                    <div>
+                        <div class="bg-white rounded-lg p-6 shadow-md">
+                            <h3 class="text-2xl font-bold mb-6 text-center text-teal-900">Trip Cost Breakdown</h3>
+                            
+                            <div class="space-y-3">
+                                <div class="flex justify-between">
+                                    <span>Travelers:</span>
+                                    <span id="displayTravelers">0</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Travel Mode:</span>
+                                    <span id="displayTravelMode">-</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Accommodation:</span>
+                                    <span id="displayAccommodation">-</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Duration:</span>
+                                    <span id="displayDuration">0 Days</span>
+                                </div>
+                                <hr>
+                                <div class="flex justify-between font-bold text-xl">
+                                    <span>Total Trip Cost:</span>
+                                    <span>₹ <span id="totalTripCost">0</span></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 text-center">
+                            <button 
+                                onclick="bookTrip()" 
+                                class="bg-teal-600 text-white px-8 py-3 rounded-lg hover:bg-teal-700 transition-all"
+                            >
+                                Book Your Trip
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedDestinations = [];
+
+        function selectDestination(destination) {
+            if (!selectedDestinations.includes(destination)) {
+                selectedDestinations.push(destination);
+                document.getElementById('tripPlannerSection').classList.remove('hidden');
+                updateSelectedDestinationsDisplay();
+            }
+        }
+
+        function updateSelectedDestinationsDisplay() {
+            const display = document.getElementById('selectedDestinationsDisplay');
+            display.innerHTML = selectedDestinations.map(dest => 
+                `<span class="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm">
+                    ${dest}
+                </span>`
+            ).join(' ');
+        }
+
+        function calculateTripCost() {
+            const travelers = document.getElementById('travelerCount').value || 0;
+            const travelMode = document.getElementById('travelMode').value;
+            const accommodationType = document.getElementById('accommodationType').value;
+            const duration = document.getElementById('tripDuration').value || 0;
+
+            // Base prices
+            const travelPrices = {
+                train: 3000,
+                flight: 8000,
+                bus: 2000
+            };
+
+            const accommodationPrices = {
+                budget: 1500,
+                standard: 3000,
+                luxury: 6000
+            };
+
+            const travelCost = travelPrices[travelMode] * travelers;
+            const accommodationCost = accommodationPrices[accommodationType] * travelers * duration;
+            const totalCost = travelCost + accommodationCost;
+
+            // Update display
+            document.getElementById('displayTravelers').textContent = travelers;
+            document.getElementById('displayTravelMode').textContent = 
+                travelMode.charAt(0).toUpperCase() + travelMode.slice(1);
+            document.getElementById('displayAccommodation').textContent = 
+                accommodationType.charAt(0).toUpperCase() + accommodationType.slice(1);
+            document.getElementById('displayDuration').textContent = duration + ' Days';
+            document.getElementById('totalTripCost').textContent = totalCost.toLocaleString();
+        }
+
+        function bookTrip() {
+            alert('Trip Booked Successfully! We will contact you soon.');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rajasthan - Land of Kings</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #fef9e7, #f0e5d8);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .destination-card {
+            transition: all 0.3s ease-in-out;
+            border: 2px solid transparent;
+        }
+        .destination-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            border-color: #d4af37;
+        }
+        @keyframes slideIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0);
+            }
+        }
+        .animate-slide-in {
+            animation: slideIn 1s ease-out;
+        }
+        .royal-theme {
+            background: linear-gradient(to right, #8b4513, #d2691e);
+            color: #fff;
+        }
+    </style>
+</head>
+<body class="min-h-screen p-6">
+    <div class="container mx-auto">
+        <h1 class="text-5xl font-bold text-center text-yellow-900 mb-12 animate-slide-in">
+            Royal Rajasthan - Discover the Kingdom
+        </h1>
+
+        <!-- Rajasthan Destinations -->
+        <div class="grid md:grid-cols-4 gap-6 mb-12">
+            <!-- Jaipur -->
+            <div class="destination-card bg-white rounded-xl shadow-lg p-4 text-center">
+                <img src="jaipur.jpg" alt="Jaipur" class="w-full h-48 object-cover rounded-lg mb-4">
+                <h2 class="text-xl font-semibold text-pink-800">Jaipur - Pink City</h2>
+                <p class="text-gray-600">Hawa Mahal & City Palace</p>
+                <button onclick="selectDestination('Jaipur')" class="mt-4 bg-pink-500 text-white px-4 py-2 rounded hover:bg-pink-600">
+                    Select
+                </button>
+            </div>
+
+            <!-- Udaipur -->
+            <div class="destination-card bg-white rounded-xl shadow-lg p-4 text-center">
+                <img src="udaipur.jpg" alt="Udaipur" class="w-full h-48 object-cover rounded-lg mb-4">
+                <h2 class="text-xl font-semibold text-blue-800">Udaipur - City of Lakes</h2>
+                <p class="text-gray-600">Lake Palace & City Palace</p>
+                <button onclick="selectDestination('Udaipur')" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    Select
+                </button>
+            </div>
+
+            <!-- Jodhpur -->
+            <div class="destination-card bg-white rounded-xl shadow-lg p-4 text-center">
+                <img src="jodhpur.jpeg" alt="Jodhpur" class="w-full h-48 object-cover rounded-lg mb-4">
+                <h2 class="text-xl font-semibold text-indigo-800">Jodhpur - Blue City</h2>
+                <p class="text-gray-600">Mehrangarh Fort</p>
+                <button onclick="selectDestination('Jodhpur')" class="mt-4 bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600">
+                    Select
+                </button>
+            </div>
+
+            <!-- Jaisalmer -->
+            <div class="destination-card bg-white rounded-xl shadow-lg p-4 text-center">
+                <img src="jaisalmer.jpg" alt="Jaisalmer" class="w-full h-48 object-cover rounded-lg mb-4">
+                <h2 class="text-xl font-semibold text-yellow-800">Jaisalmer - Golden City</h2>
+                <p class="text-gray-600">Thar Desert & Sand Dunes</p>
+                <button onclick="selectDestination('Jaisalmer')" class="mt-4 bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">
+                    Select
+                </button>
+            </div>
+        </div>
+
+        <!-- Trip Planner Section -->
+        <div id="tripPlannerSection" class="hidden animate-slide-in">
+            <div class="bg-white rounded-xl shadow-lg p-8">
+                <h2 class="text-3xl font-bold text-center mb-8 text-yellow-900">
+                    Craft Your Royal Rajasthan Journey
+                </h2>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <!-- Trip Details Form -->
+                    <div>
+                        <div class="mb-6">
+                            <h3 class="text-xl font-semibold mb-4">Selected Destinations</h3>
+                            <div id="selectedDestinationsDisplay" class="flex flex-wrap gap-2"></div>
+                        </div>
+
+                        <form id="tripForm" class="space-y-4">
+                            <div>
+                                <label class="block mb-2">Number of Travelers</label>
+                                <input 
+                                    type="number" 
+                                    id="travelerCount" 
+                                    min="1" 
+                                    max="10" 
+                                    class="w-full px-4 py-2 border rounded-lg"
+                                    onchange="calculateTripCost()"
+                                >
+                            </div>
+
+                            <div>
+                                <label class="block mb-2">Travel Mode</label>
+                                <select 
+                                    id="travelMode" 
+                                    class="w-full px-4 py-2 border rounded-lg"
+                                    onchange="calculateTripCost()"
+                                >
+                                    <option value="train">Royal Train</option>
+                                    <option value="flight">Flight</option>
+                                    <option value="bus">Luxury Bus</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block mb-2">Accommodation</label>
+                                <select 
+                                    id="accommodationType" 
+                                    class="w-full px-4 py-2 border rounded-lg"
+                                    onchange="calculateTripCost()"
+                                >
+                                    <option value="heritage">Heritage Hotel</option>
+                                    <option value="luxury">Luxury Palace</option>
+                                    <option value="standard">Standard Hotel</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block mb-2">Trip Duration (Days)</label>
+                                <input 
+                                    type="number" 
+                                    id="tripDuration" 
+                                    min="3" 
+                                    max="10" 
+                                    class="w-full px-4 py-2 border rounded-lg"
+                                    onchange="calculateTripCost()"
+                                >
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Cost Breakdown -->
+                    <div>
+                        <div class="royal-theme rounded-lg p-6 shadow-md">
+                            <h3 class="text-2xl font-bold mb-6 text-center text-white">Trip Cost Breakdown</h3>
+                            
+                            <div class="space-y-3 text-white">
+                                <div class="flex justify-between">
+                                    <span>Travelers:</span>
+                                    <span id="displayTravelers">0</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Travel Mode:</span>
+                                    <span id="displayTravelMode">-</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Accommodation:</span>
+                                    <span id="displayAccommodation">-</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Duration:</span>
+                                    <span id="displayDuration">0 Days</span>
+                                </div>
+                                <hr class="border-yellow-600">
+                                <div class="flex justify-between font-bold text-xl">
+                                    <span>Total Trip Cost:</span>
+                                    <span>₹ <span id="totalTripCost">0</span></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 text-center">
+                            <button 
+                                onclick="bookTrip()" 
+                                class="bg-yellow-600 text-white px-8 py-3 rounded-lg hover:bg-yellow-700 transition-all"
+                            >
+                                Book Royal Tour
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedDestinations = [];
+
+        function selectDestination(destination) {
+            if (!selectedDestinations.includes(destination)) {
+                selectedDestinations.push(destination);
+                document.getElementById('tripPlannerSection').classList.remove('hidden');
+                updateSelectedDestinationsDisplay();
+            }
+        }
+
+        function updateSelectedDestinationsDisplay() {
+            const display = document.getElementById('selectedDestinationsDisplay');
+            display.innerHTML = selectedDestinations.map(dest => 
+                `<span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">
+                    ${dest}
+                </span>`
+            ).join('');
+        }
+
+        function calculateTripCost() {
+            const travelers = document.getElementById('travelerCount').value || 0;
+            const travelMode = document.getElementById('travelMode').value;
+            const accommodationType = document.getElementById('accommodationType').value;
+            const duration = document.getElementById('tripDuration').value || 0;
+
+            // Base prices with Rajasthan-specific pricing
+            const travelPrices = {
+                train: 5000,     // Royal train experience
+                flight: 10000,   // Luxury flight
+                bus: 3000        // Luxury bus tour
+            };
+
+            const accommodationPrices = {
+                heritage: 4000,  // Heritage hotel experience
+                luxury: 8000,    // Palace-like accommodation
+                standard: 2500   // Standard hotel
+            };
+
+            const travelCost = travelPrices[travelMode] * travelers;
+            const accommodationCost = accommodationPrices[accommodationType] * travelers * duration;
+            const totalCost = travelCost + accommodationCost;
+
+            // Update display
+            document.getElementById('displayTravelers').textContent = travelers;
+            document.getElementById('displayTravelMode').textContent = 
+                travelMode.charAt(0).toUpperCase() + travelMode.slice(1);
+            document.getElementById('displayAccommodation').textContent = 
+                accommodationType.charAt(0).toUpperCase() + accommodationType.slice(1);
+            document.getElementById('displayDuration').textContent = duration + ' Days';
+            document.getElementById('totalTripCost').textContent = totalCost.toLocaleString();
+        }
+
+        function bookTrip() {
+            alert('Your Royal Rajasthan Tour is Booked! Our Royal Concierge will contact you soon.');
+        }
+    </script>
+</body>
+</html>

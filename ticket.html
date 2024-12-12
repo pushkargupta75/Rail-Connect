@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Railway Ticket Booking System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --background-color: #f0f4f8;
+            --text-color: #2c3e50;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+        }
+
+        .booking-container {
+            background: var(--background-color);
+            width: 500px;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            
+            transition: all 0.3s ease;
+        }
+
+        .booking-container:hover {
+            transform:scale(1.04);
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-size: 2.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .input-group input, 
+        .input-group select {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.9);
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus, 
+        .input-group select:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            transform: scale(1.02);
+        }
+
+        .autocomplete-list {
+            position: absolute;
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            background: white;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            z-index: 10;
+            display: none;
+        }
+
+        .autocomplete-list div {
+            padding: 10px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .autocomplete-list div:hover {
+            background-color: #f0f0f0;
+        }
+
+        #search-trains {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(to right, #2ecc71, #27ae60);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #search-trains:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        #trains-result {
+            margin-top: 20px;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .train-card {
+            background: linear-gradient(to right, #f1f2f6, #dfe4ea);
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="booking-container">
+        <h1>🚉 Wish you Ticket Booking 🚉</h1>
+        
+        <div class="input-group">
+            <input type="text" id="source" placeholder="Source Station" autocomplete="off">
+            <div id="source-suggestions" class="autocomplete-list"></div>
+        </div>
+        
+        <div class="input-group">
+            <input type="text" id="destination" placeholder="Destination Station" autocomplete="off">
+            <div id="destination-suggestions" class="autocomplete-list"></div>
+        </div>
+        
+        <div class="input-group">
+            <input type="date" id="travel-date">
+        </div>
+        
+        <div class="input-group">
+            <select id="passenger-class">
+                <option value="">Select Passenger Class</option>
+                <option value="first">First Class</option>
+                <option value="second">Second Class</option>
+                <option value="ac-3">Third AC</option>
+                <option value="sleeper">Sleeper</option>
+                <option value="ac-chair">AC Chair Car</option>
+            </select>
+        </div>
+        
+        <div class="input-group">
+            <select id="passenger-category">
+                <option value="">Select Passenger Category</option>
+                <option value="general">General</option>
+                <option value="senior">Senior Citizen</option>
+                <option value="student">Student</option>
+                <option value="armed-forces">Armed Forces</option>
+                <option value="disabled">Disabled</option>
+            </select>
+        </div>
+        
+        <button id="search-trains">Search Trains</button>
+        
+        <div id="trains-result"></div>
+    </div>
+
+    <script>
+        // Station Suggestions
+        const stations = [
+            'Mumbai Central', 'Delhi Junction', 'Kolkata Terminal', 
+            'Chennai Central', 'Bangalore City', 'Hyderabad Deccan', 
+            'Pune Junction', 'Ahmedabad', 'Jaipur', 'Lucknow', 
+            'Patna', 'Bhubaneswar', 'Guwahati', 'Trivandrum', 'Chandigarh'
+        ];
+
+        // Autocomplete functionality
+        function setupAutocomplete(inputId, suggestionsId) {
+            const input = document.getElementById(inputId);
+            const suggestionsContainer = document.getElementById(suggestionsId);
+
+            input.addEventListener('input', function() {
+                const value = this.value.toLowerCase();
+                suggestionsContainer.innerHTML = '';
+                suggestionsContainer.style.display = 'none';
+
+                if (value.length > 0) {
+                    const filteredStations = stations.filter(station => 
+                        station.toLowerCase().includes(value)
+                    );
+
+                    if (filteredStations.length > 0) {
+                        suggestionsContainer.style.display = 'block';
+                        filteredStations.forEach(station => {
+                            const div = document.createElement('div');
+                            div.textContent = station;
+                            div.addEventListener('click', function() {
+                                input.value = station;
+                                suggestionsContainer.style.display = 'none';
+                            });
+                            suggestionsContainer.appendChild(div);
+                        });
+                    }
+                }
+            });
+
+            // Close suggestions when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!input.contains(e.target)) {
+                    suggestionsContainer.style.display = 'none';
+                }
+            });
+        }
+
+        setupAutocomplete('source', 'source-suggestions');
+        setupAutocomplete('destination', 'destination-suggestions');
+
+        // Dummy Train Data
+        const trains = [
+            {
+                number: '12345',
+                name: 'Mumbai Express',
+                departure: '06:00',
+                arrival: '14:30',
+                seats: {
+                    'first': 20,
+                    'second': 50,
+                    'ac-3': 40,
+                    'sleeper': 60,
+                    'ac-chair': 30
+                },
+                fares: {
+                    'first': 1500,
+                    'second': 800,
+                    'ac-3': 1200,
+                    'sleeper': 600,
+                    'ac-chair': 1000
+                }
+            },
+            // Add more train data similarly...
+        ];
+
+        // Search Trains Functionality
+        document.getElementById('search-trains').addEventListener('click', function() {
+            const source = document.getElementById('source').value;
+            const destination = document.getElementById('destination').value;
+            const date = document.getElementById('travel-date').value;
+            const passengerClass = document.getElementById('passenger-class').value;
+            const passengerCategory = document.getElementById('passenger-category').value;
+
+            const trainsResult = document.getElementById('trains-result');
+            trainsResult.innerHTML = '';
+
+            // Simple filtering logic (you'd expand this in a real application)
+            const availableTrains = trains.filter(train => 
+                source && destination && date && passengerClass
+            );
+
+            availableTrains.forEach(train => {
+                const trainCard = document.createElement('div');
+                trainCard.classList.add('train-card');
+                trainCard.innerHTML = `
+                    <div>
+                        <strong>${train.number} - ${train.name}</strong><br>
+                        Departure: ${train.departure} | Arrival: ${train.arrival}
+                    </div>
+                    <div>
+                        Available ${passengerClass.toUpperCase()} Seats: ${train.seats[passengerClass]}<br>
+                        Fare: ₹${train.fares[passengerClass]}
+                    </div>
+                `;
+                trainsResult.appendChild(trainCard);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,90 +1,99 @@
 <!DOCTYPE html>
-< lang="en">
+<lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Railway Management System</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" type="image/jpeg" href="logo.jpg">
     
 </head>
-<>  
+<body>
+    
+</body>
     <!-- Navigation Bar -->
     <nav class="navbar">
         <img src="logo.jpg" alt="Railway Logo" class="logo">
         <div class="nav-links">
             <a href="#">HOME</a>
             <a href="pnr.html">CHECK PNR STATUS</a>
-            <a href="#">TRAIN TRACKING</a>
+            <a href="train_tracking.html">TRAIN TRACKING</a>
             <a href="ecater.html">E CATERING</a>
             <a href="signin.html">SIGN IN</a>
             <a href="signup.html">SIGN UP</a>
         </div>
     </nav>
+    <div id="mov">
+        <p>Welcome to <b>Rail Connect</b>, where your journey matters!</p>
+    </div>
+        <br>
+    </p><div id="mo"><p>Thank you for choosing <b>Rail Connect</b> where every trip is more than just a ride. It’s an experience!<br> </p></div>
+    <div><center><p>Safe travels!</p></center></div>
+    
     
     
 
     <!-- Ticket Search Box -->
     <div class="ins">
         <div class="img">
-            <img src="train.jpg" align="left">
+            <img src="train6.avif">
         </div>
-        <div class="ticket-form">
-            <h2 class="form-title">Train Ticket Booking</h2>
+        <div class="cloud-container">
+            <div class="cloud">
+                <p class="cloud-text">
+                    *We do have season tickets available! 
+                    <a href="ticket.html" class="cloud-link">Use that link</a> 
+                    to learn more.*
+                </p>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Holiday Packages -->
+    <div class="holiday-packages">
+        <div class="line1">
+            <a href="kashmir.html">
+            <div class="package" id="kash">
+                <img src="shim.jpg" alt="">
+                </a>
+                <h3>Kashmir Paradise Package</h3>
+                <p>Explore the beautiful valleys of Kashmir</p>
+                
+            </div>
+            <a href="dham.html">
+            <div class="package" id="dham">
+                <img src="dham.jpg" alt="" id="dham">
+            </a>
+                <h3>Char Dham Yatra Package</h3>
+                <p>Spiritual journey to all 4 holy destinations</p>
             
-            <div class="form-group">
-                <label for="from-station">From Station</label>
-                <div class="input-wrapper">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <input type="text" id="from-station" class="form-control" placeholder="Starting Station" required>
-                </div>
             </div>
-    
-            <div class="form-group">
-                <label for="to-station">To Station</label>
-                <div class="input-wrapper">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <input type="text" id="to-station" class="form-control" placeholder="Destination Station" required>
-                </div>
+        </div>
+        <br>
+        <div class="line2">
+            <a href="rajasthan.html">
+            <div class="package" id="raj">
+                <img src="rajasthan.jpeg" alt="" id="shim">
+            </a>
+                <h3>Rajasthan - Land of Kings</h3>
+                <p>Discover the Kingdom</p>
+            
             </div>
-    
-            <div class="form-group">
-                <label for="travel-date">Travel Date</label>
-                <div class="input-wrapper">
-                    <i class="fas fa-calendar-alt"></i>
-                    <input type="date" id="travel-date" class="form-control" required>
-                </div>
+            <a href="south.html">
+            <div class="package" id="sou">
+                <img src="south.jpeg" alt="" id="shim">
+            </a>
+                <h3>South India</h3>
+                <p>Explore the beautiful Places of South India</p>
+            
             </div>
-    
-            <div class="form-group">
-                <label for="passenger-class">Passenger Class</label>
-                <select id="passenger-class" class="custom-select" required>
-                    <option value="">Select Class</option>
-                    <option value="first">First Class</option>
-                    <option value="second">Second Class</option>
-                    <option value="sleeper">Sleeper</option>
-                    <option value="ac">AC Chair Car</option>
-                </select>
-            </div>
-    
-            <div class="form-group">
-                <label for="passenger-category">Passenger Category</label>
-                <select id="passenger-category" class="custom-select" required>
-                    <option value="">Select Category</option>
-                    <option value="general">General</option>
-                    <option value="senior">Senior Citizen</option>
-                    <option value="student">Student</option>
-                    <option value="armed-forces">Armed Forces</option>
-                    <option value="disabled">Disabled</option>
-                </select>
-            </div>
-    
-            <button id="search-trains" class="btn-search">Search Trains</button>
         </div>
     </div>
     
 
     <!-- Why Book With Us Section -->
-     
+    <div class="bookandpic"> 
     <div class="why-book-section">
         <h2>Why Book Tickets With Us</h2>
         <div class="why-book-points">
@@ -92,14 +101,17 @@
                 <img src="confirm.jpg" alt="Confirmed Tickets" class="bullet">
                 <span>GET CONFIRMED TICKETS</span>
             </div>
+            <br>
             <div class="why-book-point">
                 <img src="payment.jpg" alt="Secure Payments" class="bullet">
                 <span>UPI ENABLED SECURED PAYMENTS</span>
             </div>
+            <br>
             <div class="why-book-point">
                 <img src="cancel.jpg" alt="Free Cancellation" class="bullet">
                 <span>FREE CANCELLATION</span>
             </div>
+            <br>
             <div class="why-book-point">
                 <img src="live.jpg" alt="Train Tracking" class="bullet">
                 <span>CURRENT TRAIN TRACKING</span>
@@ -109,31 +121,18 @@
 
     <!-- Mobile Showcase -->
     <div class="mobile-showcase">
-        <img src="phone.jpg" alt="Mobile App UI">
+        <img src="train3.jpg" alt="Mobile App UI">
     </div>
-
-    <!-- Holiday Packages -->
-    <div class="holiday-packages">
-        <div class="package">
-            <img src="shim.jpg" alt="" id="shim">
-            <h3>Kashmir Paradise Package</h3>
-            <p>Explore the beautiful valleys of Kashmir</p>
-            <p>Duration: 7 Days</p>
-            <p>Price: ₹25,000 per person</p>
-        </div>
-        <div class="package">
-            <img src="dham.jpg" alt="" id="dham">
-            <h3>Char Dham Yatra Package</h3>
-            <p>Spiritual journey to all 4 holy destinations</p>
-            <p>Duration: 12 Days</p>
-            <p>Price: ₹45,000 per person</p>
-        </div>
-    </div>
+</div>
+    
 
     <!-- Live Train Tracking -->
+     
     <div class="live-train-tracking">
+        <a href="train_tracking.html" target="_blank">
         <h2>Live Train Tracking</h2>
         <p>Track your train in real-time with our advanced tracking system</p>
+    </a>
     </div>
 
     <!-- Footer -->

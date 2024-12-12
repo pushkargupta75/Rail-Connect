@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Train Tracking Express</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --background-color: #f0f4f8;
+            --text-color: #2c3e50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+            perspective: 1000px;
+        }
+
+        .tracking-container {
+            background: rgba(255,255,255,0.9);
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            padding: 40px;
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+            transform-style: preserve-3d;
+            transform: rotateX(-10deg) scale(0.9);
+            opacity: 0;
+            animation: reveal 1s forwards ease-out;
+        }
+
+        @keyframes reveal {
+            to {
+                transform: rotateX(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .header-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .train-logo {
+            width: 80px;
+            height: 80px;
+            margin-right: 20px;
+            background: var(--secondary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s infinite;
+        }
+
+        .train-logo i {
+            color: white;
+            font-size: 40px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .title-section {
+            text-align: left;
+        }
+
+        .main-title {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: var(--secondary-color);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .input-wrapper {
+            flex-grow: 1;
+            position: relative;
+        }
+
+        #trainNumber, #trainName {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid var(--secondary-color);
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        #trainNumber:focus, #trainName:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 10px rgba(46,204,113,0.3);
+        }
+
+        #searchTrain {
+            padding: 15px 30px;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #searchTrain:hover {
+            background: #27ae60;
+            transform: translateY(-3px);
+        }
+
+        #suggestionsList {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        #suggestionsList div {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        #suggestionsList div:hover {
+            background-color: #f0f0f0;
+        }
+
+        #trainDetails {
+            background: rgba(255,255,255,0.8);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .station-list {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding-bottom: 20px;
+        }
+
+        .station-card {
+            min-width: 250px;
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .station-card:hover {
+            transform: translateY(-10px);
+        }
+
+        @media (max-width: 600px) {
+            .tracking-container {
+                margin: 20px;
+                padding: 20px;
+            }
+
+            .input-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="tracking-container">
+        <div class="header-section">
+            <div class="train-logo">
+                <i class="fas fa-train"></i>
+            </div>
+            <div class="title-section">
+                <h1 class="main-title">Train Tracking</h1>
+                <h2 class="subtitle">Your Journey, Our Precision</h2>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <div class="input-wrapper">
+                <input 
+                    type="text" 
+                    id="trainNumber" 
+                    placeholder="Enter 5-digit Train Number"
+                    maxlength="5"
+                    pattern="\d{5}"
+                >
+            </div>
+            <div class="input-wrapper">
+                <input 
+                    type="text" 
+                    id="trainName" 
+                    placeholder="Enter Train Name"
+                    autocomplete="off"
+                >
+                <div id="suggestionsList"></div>
+            </div>
+            <button id="searchTrain">
+                <i class="fas fa-search"></i> Search
+            </button>
+        </div>
+
+        <div id="trainDetails">
+            <!-- Train details will be dynamically populated here -->
+        </div>
+    </div>
+
+    
+
+    <script>
+        // Predefined train database
+        const trainDatabase = [
+            {
+                number: '12345',
+                name: 'Rajdhani Express',
+                startDate: '2024-01-15',
+                status: 'Started',
+                route: {
+                    source: 'Mumbai Central',
+                    destination: 'New Delhi',
+                    delay: '45 minutes'
+                },
+                stations: [
+                    {
+                        name: 'Mumbai Central',
+                        scheduledTime: '06:00 AM',
+                        platform: '1',
+                        status: 'Departed'
+                    },
+                    {
+                        name: 'Surat',
+                        scheduledTime: '08:30 AM',
+                        platform: '3',
+                        status: 'On Time'
+                    },
+                    {
+                        name: 'Vadodara',
+                        scheduledTime: '10:15 AM',
+                        platform: '2',
+                        status: 'Delayed'
+                    },
+                    {
+                        name: 'New Delhi',
+                        scheduledTime: '04:45 PM',
+                        platform: '1',
+                        status: 'Expected'
+                    }
+                ]
+            },
+            {
+                number: '54321',
+                name: 'Duronto Express',
+                startDate: '2024-01-16',
+                status: 'Started',
+                route: {
+                    source: 'Kolkata',
+                    destination: 'Mumbai',
+                    delay: '30 minutes'
+                },
+                stations: [
+                    {
+                        name: 'Kolkata',
+                        scheduledTime: '05:30 AM',
+                        platform: '2',
+                        status: 'Departed'
+                    },
+                    {
+                        name: 'Patna',
+                        scheduledTime: '09:15 AM',
+                        platform: '4',
+                        status: 'On Time'
+                    },
+                    {
+                        name: 'Nagpur',
+                        scheduledTime: '02:45 PM',
+                        platform: '3',
+                        status: 'On Time'
+                    },
+                    {
+                        name: 'Mumbai',
+                        scheduledTime: '10:30 PM',
+                        platform: '1',
+                        status: 'Expected'
+                    }
+                ]
+            },
+            {
+                number: '67890',
+                name: 'Shatabdi Express',
+                startDate: '2024-01-17',
+                status: 'Not Started',
+                route: {
+                    source: 'Chennai',
+                    destination: 'Bangalore',
+                    delay: '15 minutes'
+                },
+                stations: [
+                    {
+                        name: 'Chennai',
+                        scheduledTime: '07:00 AM',
+                        platform: '1',
+                        status: 'Waiting'
+                    },
+                    {
+                        name: 'Vellore',
+                        scheduledTime: '09:30 AM',
+                        platform: '2',
+                        status: 'Expected'
+                    },
+                    {
+                        name: 'Bangalore',
+                        scheduledTime: '12:45 PM',
+                        platform: '3',
+                        status: 'Expected'
+                    }
+                ]
+            }
+        ];
+
+        const trainNumberInput = document.getElementById('trainNumber');
+        const trainNameInput = document.getElementById('trainName');
+        const suggestionsList = document.getElementById('suggestionsList');
+        const searchTrainBtn = document.getElementById('searchTrain');
+        const trainDetailsDiv = document.getElementById('trainDetails');
+
+        // Train name autocomplete
+        trainNameInput.addEventListener('input', function() {
+            const input = this.value.toLowerCase();
+            const matchedTrains = trainDatabase.filter(train => 
+                train.name.toLowerCase().includes(input)
+            );
+
+            // Clear previous suggestions
+            suggestionsList.innerHTML = '';
+            suggestionsList.style.display = 'none';
+
+            if (input && matchedTrains.length > 0) {
+                matchedTrains.forEach(train => {
+                    const div = document.createElement('div');
+                    div.textContent = `${train.name} (${train.number})`;
+                    div.addEventListener('click', () => {
+                        trainNameInput.value = train.name;
+                        trainNumberInput.value = train.number;
+                        suggestionsList.style.display = 'none';
+                    });
+                    suggestionsList.appendChild(div);
+                });
+                suggestionsList.style.display = 'block';
+            }
+        });
+
+        // Hide suggestions when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!trainNameInput.contains(e.target)) {
+                suggestionsList.style.display = 'none';
+            }
+        });
+
+        // Search train functionality
+        searchTrainBtn.addEventListener('click', function() {
+            const trainNumber = trainNumberInput.value;
+            const trainName = trainNameInput.value;
+
+            // Validate train number (5 digits)
+            if (!/^\d{5}$/.test(trainNumber)) {
+                alert('Please enter a valid 5-digit train number');
+                return;
+            }
+
+            // Find matching train
+            const selectedTrain = trainDatabase.find(train => 
+                train.number === trainNumber && train.name === trainName
+            );
+
+            if (!selectedTrain) {
+                alert('No train found with the given number and name');
+                return;
+            }
+
+            // Populate train details
+            trainDetailsDiv.innerHTML = `
+                <h3>Train Details</h3>
+                <p><strong>Train Number:</strong> ${selectedTrain.number}</p>
+                <p><strong>Train Name:</strong> ${selectedTrain.name}</p>
+                <p><strong>Start Date:</strong> ${selectedTrain.startDate}</p>
+                <p><strong>Train Status:</strong> ${selectedTrain.status}</p>
+                <p><strong>Route:</strong> ${selectedTrain.route.source} to ${selectedTrain.route.destination}</p>
+                <p><strong>Current Delay:</strong> ${selectedTrain.route.delay}</p>
+                
+                <h4>Station Stops</h4>
+                <div class="station-list">
+                    ${selectedTrain.stations.map(station => `
+                        <div class="station-card">
+                            <h5>${station.name}</h5>
+                            <p><strong>Scheduled Time:</strong> ${station.scheduledTime}</p>
+                            <p><strong>Platform:</strong> ${station.platform}</p>
+                            <p class="status-${station.status.toLowerCase().replace(' ', '-')}">
+                                Status: ${station.status}
+                            </p>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            trainDetailsDiv.style.display = 'block';
+        });
+
+        // Enter key support
+        trainNumberInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') searchTrainBtn.click();
+        });
+        trainNameInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') searchTrainBtn.click();
+        });
+    </script>
+</body>
+</html>

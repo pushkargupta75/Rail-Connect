@@ -5,91 +5,151 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Train E-Catering Food Ordering</title>
     <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --background-color: #f0f4f8;
+            --text-color: #2c3e50;
+        }
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             line-height: 1.6;
+            color: #333;
         }
+
         .container {
-            width: 40%;
-            justify-content: center;
-            height: 200px;
-            max-width: 1200px;
+            width: 80%;
+            max-width: 1400px;
             margin: 30px auto;
-            background-color: white;
-            padding: 30px;
+            padding: 40px;
+            background-color: rgba(255, 255, 255, 0.9);
             border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
         }
+
+        h1 {
+            text-align: center;
+            color: #ff6347;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+        }
+
         .pnr-section {
             display: flex;
+            justify-content: center;
             margin-bottom: 20px;
         }
+
         .pnr-input {
-            flex-grow: 1;
-            padding: 10px;
-            border: 1px solid #ddd;
+            padding: 15px;
+            border: 2px solid #007bff;
             border-radius: 5px 0 0 5px;
+            font-size: 1.1rem;
+            width: 250px;
         }
+
         .pnr-check-btn {
-            padding: 10px 20px;
-            background-color: #007bff;
+            padding: 15px 30px;
+            background-color: #28a745;
             color: white;
             border: none;
             border-radius: 0 5px 5px 0;
             cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
         }
+
+        .pnr-check-btn:hover {
+            background-color: #218838;
+        }
+
         .menu-section {
-            
-            display: none;
+            display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 20px;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
         }
+
         .food-item {
-            border: 1px solid #ddd;
-            margin-top: 70px;
-            padding: 15px;
-            text-align: center;
+            background-color: #fff;
+            padding: 20px;
             border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
         }
+
         .food-item img {
-            max-width: 200px;
+            width: 200px;
             height: 150px;
             object-fit: cover;
-            margin-bottom: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
         }
+
+        .food-item h3 {
+            color: #ff6347;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+
+        .food-item p {
+            font-size: 1.1rem;
+            color: #28a745;
+            margin-bottom: 15px;
+        }
+
+        .food-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
         .food-item-actions {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 10px;
         }
+
         .quantity-control {
             display: flex;
             align-items: center;
         }
+
         .quantity-btn {
             background-color: #007bff;
             color: white;
             border: none;
             padding: 5px 10px;
             cursor: pointer;
+            transition: all 0.3s ease;
         }
+
+        .quantity-btn:hover {
+            background-color: #0056b3;
+        }
+
         .quantity {
             margin: 0 10px;
+            font-size: 1.2rem;
         }
+
         .cart-section {
             display: none;
             margin-top: 20px;
             background-color: #f9f9f9;
             padding: 20px;
             border-radius: 10px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
         }
+
         .cart-item {
             display: flex;
             justify-content: space-between;
@@ -97,26 +157,52 @@
             border-bottom: 1px solid #ddd;
             padding: 10px 0;
         }
+
         .total-amount {
             text-align: right;
+            font-size: 1.3rem;
             margin-top: 20px;
             font-weight: bold;
+            color: #28a745;
         }
+
         .place-order-btn {
             display: block;
             width: 100%;
             padding: 15px;
-            background-color: #28a745;
+            background-color: #ff6347;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             margin-top: 20px;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease;
         }
+
+        .place-order-btn:hover {
+            background-color: #e53d22;
+        }
+
+        .order-details {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.2rem;
+            color: #007bff;
+        }
+
         .error-message {
             color: red;
             text-align: center;
             margin-top: 10px;
+        }
+
+        .food-item img {
+            transition: transform 0.3s ease;
+        }
+
+        .food-item img:hover {
+            transform: scale(1.1);
         }
     </style>
 </head>
@@ -146,9 +232,8 @@
                     <button class="quantity-btn add-to-cart">Add to Cart</button>
                 </div>
             </div>
-
             <div class="food-item">
-                <img src="veg.jpg" alt="Non-Vegetarian Thali">
+                <img src="nonveg.jpg" alt="Non-Vegetarian Thali">
                 <h3>Non-Vegetarian Thali</h3>
                 <p>₹300</p>
                 <div class="food-item-actions">
@@ -160,9 +245,8 @@
                     <button class="quantity-btn add-to-cart">Add to Cart</button>
                 </div>
             </div>
-
             <div class="food-item">
-                <img src="chibir.jpg" alt="Biryani">
+                <img src="chibir.jpg" alt="Non-Vegetarian Thali">
                 <h3>Chicken Biryani</h3>
                 <p>₹220</p>
                 <div class="food-item-actions">
@@ -174,10 +258,9 @@
                     <button class="quantity-btn add-to-cart">Add to Cart</button>
                 </div>
             </div>
-
             <div class="food-item">
-                <img src="bread.jpg" alt="Bread Pakora">
-                <h3>Bread Pakora</h3>
+                <img src="bread.jpg" alt="Non-Vegetarian Thali">
+                <h3>'Bread Pakora</h3>
                 <p>₹50</p>
                 <div class="food-item-actions">
                     <div class="quantity-control">
@@ -188,6 +271,87 @@
                     <button class="quantity-btn add-to-cart">Add to Cart</button>
                 </div>
             </div>
+            <div class="food-item">
+                <img src="paneer.jpeg" alt="Non-Vegetarian Thali">
+                <h3>Paneer Butter Masala</h3>
+                <p>₹280</p>
+                <div class="food-item-actions">
+                    <div class="quantity-control">
+                        <button class="quantity-btn minus">-</button>
+                        <span class="quantity">0</span>
+                        <button class="quantity-btn plus">+</button>
+                    </div>
+                    <button class="quantity-btn add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <div class="food-item">
+                <img src="pulao.jpeg" alt="Non-Vegetarian Thali">
+                <h3>Pulao</h3>
+                <p>₹150</p>
+                <div class="food-item-actions">
+                    <div class="quantity-control">
+                        <button class="quantity-btn minus">-</button>
+                        <span class="quantity">0</span>
+                        <button class="quantity-btn plus">+</button>
+                    </div>
+                    <button class="quantity-btn add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <div class="food-item">
+                <img src="dosa.jpeg" alt="Non-Vegetarian Thali">
+                <h3>Dosa</h3>
+                <p>₹120</p>
+                <div class="food-item-actions">
+                    <div class="quantity-control">
+                        <button class="quantity-btn minus">-</button>
+                        <span class="quantity">0</span>
+                        <button class="quantity-btn plus">+</button>
+                    </div>
+                    <button class="quantity-btn add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <div class="food-item">
+                <img src="chai.jpeg" alt="Non-Vegetarian Thali">
+                <h3>Masala Chai</h3>
+                <p>₹40</p>
+                <div class="food-item-actions">
+                    <div class="quantity-control">
+                        <button class="quantity-btn minus">-</button>
+                        <span class="quantity">0</span>
+                        <button class="quantity-btn plus">+</button>
+                    </div>
+                    <button class="quantity-btn add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <div class="food-item">
+                <img src="tikki.jpg" alt="Non-Vegetarian Thali">
+                <h3>Aloo Tikki</h3>
+                <p>₹60</p>
+                <div class="food-item-actions">
+                    <div class="quantity-control">
+                        <button class="quantity-btn minus">-</button>
+                        <span class="quantity">0</span>
+                        <button class="quantity-btn plus">+</button>
+                    </div>
+                    <button class="quantity-btn add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            <div class="food-item">
+                <img src="samosa.jpeg" alt="Non-Vegetarian Thali">
+                <h3>Samosa</h3>
+                <p>₹40</p>
+                <div class="food-item-actions">
+                    <div class="quantity-control">
+                        <button class="quantity-btn minus">-</button>
+                        <span class="quantity">0</span>
+                        <button class="quantity-btn plus">+</button>
+                    </div>
+                    <button class="quantity-btn add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+            
+
+            <!-- More food items can be added here in similar fashion -->
         </div>
 
         <!-- Cart Section -->
@@ -196,6 +360,11 @@
             <div id="cartItems"></div>
             <div id="totalAmount" class="total-amount">Total: ₹0</div>
             <button id="placeOrderBtn" class="place-order-btn">Place Order</button>
+        </div>
+
+        <!-- Order Details -->
+        <div id="orderDetails" class="order-details" style="display:none;">
+            <p>Order will be delivered in <span id="deliveryTime"></span> at station <span id="stationName"></span>.</p>
         </div>
     </div>
 
@@ -209,6 +378,9 @@
             const cartItems = document.getElementById('cartItems');
             const totalAmountEl = document.getElementById('totalAmount');
             const placeOrderBtn = document.getElementById('placeOrderBtn');
+            const orderDetails = document.getElementById('orderDetails');
+            const deliveryTimeEl = document.getElementById('deliveryTime');
+            const stationNameEl = document.getElementById('stationName');
 
             // Mock PNR Database
             const pnrDatabase = {
@@ -218,10 +390,16 @@
 
             // Food Menu
             const foodMenu = [
-                { name: 'Vegetarian Thali', price: 250 },
-                { name: 'Non-Vegetarian Thali', price: 300 },
-                { name: 'Chicken Biryani', price: 220 },
-                { name: 'Bread Pakora', price: 50 }
+                { name: 'Vegetarian Thali', price: 250, img: 'veg.jpg' },
+                { name: 'Non-Vegetarian Thali', price: 300, img: 'veg.jpg' },
+                { name: 'Chicken Biryani', price: 220, img: 'chibir.jpg' },
+                { name: 'Bread Pakora', price: 50, img: 'bread.jpg' },
+                { name: 'Paneer Butter Masala', price: 280, img: 'paneer.jpg' },
+                { name: 'Pulao', price: 150, img: 'pulao.jpg' },
+                { name: 'Dosa', price: 120, img: 'dosa.jpg' },
+                { name: 'Masala Chai', price: 40, img: 'chai.jpg' },
+                { name: 'Aloo Tikki', price: 60, img: 'tikki.jpg' },
+                { name: 'Samosa', price: 40, img: 'samosa.jpg' }
             ];
 
             let cart = [];
@@ -239,11 +417,11 @@
                 const pnrData = pnrDatabase[pnrNumber];
                 
                 if (pnrData && pnrData.valid) {
-                    menuSection.style.display = 'grid';
+                    menuSection.style.opacity = 1;
                     cartSection.style.display = 'block';
                 } else {
                     pnrError.textContent = 'Invalid PNR Number. Please check and try again.';
-                    menuSection.style.display = 'none';
+                    menuSection.style.opacity = 0;
                     cartSection.style.display = 'none';
                 }
             });
@@ -275,10 +453,10 @@
                     if (quantity > 0) {
                         const foodName = item.querySelector('h3').textContent;
                         const foodPrice = parseInt(item.querySelector('p').textContent.replace('₹', ''));
-                        
+
                         // Check if item already in cart
                         const existingCartItem = cart.find(cartItem => cartItem.name === foodName);
-                        
+
                         if (existingCartItem) {
                             existingCartItem.quantity += quantity;
                         } else {
@@ -312,6 +490,13 @@
                 }
 
                 alert('Order placed successfully! Your food will be delivered to your seat.');
+
+                // Show delivery details
+                deliveryTimeEl.textContent = "30 minutes";
+                stationNameEl.textContent = "New Delhi Station";
+
+                orderDetails.style.display = 'block';
+
                 cart = [];
                 updateCart();
             });

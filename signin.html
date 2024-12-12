@@ -2,273 +2,371 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Railway User Sign In</title>
+    <title>Railway Connect</title>
     <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --background-color: #f0f4f8;
+            --text-color: #2c3e50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            background: linear-gradient(135deg, #007bff 0%, #00c6ff 100%);
+            perspective: 1000px;
+            overflow-x: hidden;
         }
 
-        .signin-container {
-            background-color: white;
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes shine {
+            0% { 
+                background-position: -200% 0;
+            }
+            100% { 
+                background-position: 200% 0;
+            }
+        }
+
+        .login-container {
+            width: 420px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
             padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            width: 400px;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            transform: rotateX(10deg) rotateY(-10deg);
+            transition: all 0.5s ease;
         }
 
-        .signin-container h2 {
+        .login-container:hover {
+            transform: rotateX(0) rotateY(0);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        }
+
+        .logo {
+            width: 120px;
+            height: 120px;
+            background: var(--secondary-color);
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: float 3s ease-in-out infinite;
+            box-shadow: 0 10px 25px rgba(52,152,219,0.3);
+        }
+
+        .logo::before {
+            content: '🚉';
+            font-size: 60px;
+        }
+
+        .title {
             text-align: center;
-            color: #333;
+            color: var(--primary-color);
+            font-size: 24px;
             margin-bottom: 30px;
+            position: relative;
         }
 
-        .form-group {
+        .title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--secondary-color);
+        }
+
+        .input-group {
             margin-bottom: 20px;
             position: relative;
         }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #666;
-        }
-
-        .form-group input {
+        .input-group input {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            transition: border-color 0.3s ease;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            outline: none;
+            transition: all 0.3s ease;
         }
 
-        .form-group input:focus {
-            outline: none;
-            border-color: #007bff;
+        .input-group input:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 10px rgba(52,152,219,0.2);
         }
 
         .captcha-container {
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
-        .captcha-canvas {
-            background-color: #f0f0f0;
+        .captcha-display {
+            flex-grow: 1;
+            background: linear-gradient(45deg, #f6d365 0%, #fda085 100%);
+            color: white;
             padding: 10px;
-            border-radius: 5px;
+            text-align: center;
+            letter-spacing: 5px;
+            border-radius: 10px;
             margin-right: 10px;
+            position: relative;
+            overflow: hidden;
+            background-size: 200% auto;
+            animation: shine 2s linear infinite;
         }
 
-        .captcha-refresh {
+        .refresh-btn {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 10px;
             cursor: pointer;
-            color: #007bff;
-            font-size: 1.5em;
+            transition: all 0.3s ease;
+        }
+
+        .refresh-btn:hover {
+            transform: scale(1.05);
+            background: #27AE60;
         }
 
         .signin-btn {
             width: 100%;
-            padding: 12px;
-            background-color: #007bff;
+            padding: 15px;
+            background: var(--secondary-color);
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
         .signin-btn:hover {
-            background-color: #0056b3;
+            background: #2980B9;
+            transform: translateY(-3px);
+            box-shadow: 0 7px 14px rgba(50,50,93,.1), 0 3px 6px rgba(0,0,0,.08);
         }
 
-        .error-message {
-            color: red;
-            font-size: 0.8em;
-            margin-top: 5px;
-            display: none;
+        .home-page {
+            width: 100%;
+            min-height: 100vh;
+            background: var(--background-gradient);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
         }
 
-        .signup-link {
+        .user-header {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 30px;
+        }
+
+        .user-badge {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
             text-align: center;
-            margin-top: 15px;
+            transition: all 0.3s ease;
+            box-shadow: var(--card-shadow);
         }
 
-        .signup-link a {
-            color: #007bff;
-            text-decoration: none;
+        .service-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
 
-        .password-toggle {
-            position: absolute;
-            right: 10px;
-            top: 40px;
-            cursor: pointer;
-            color: #999;
+        .service-icon {
+            width: 100px;
+            height: 100px;
+            background: var(--secondary-color);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 40px;
+            box-shadow: 0 10px 25px rgba(52,152,219,0.3);
+        }
+
+        @media (max-width: 768px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="signin-container">
-        <h2>Railway User Sign In</h2>
-        <form id="signinForm">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
-                <div id="usernameError" class="error-message">Username is required</div>
-            </div>
-
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required>
-                <span class="password-toggle" id="passwordToggle">👁️</span>
-                <div id="passwordError" class="error-message">Password is required</div>
-            </div>
-
-            <div class="form-group">
-                <label>Captcha Verification</label>
-                <div class="captcha-container">
-                    <canvas id="captchaCanvas" width="150" height="50" class="captcha-canvas"></canvas>
-                    <span id="refreshCaptcha" class="captcha-refresh">↻</span>
-                </div>
-                <input type="text" id="captchaInput" placeholder="Enter Captcha" required>
-                <div id="captchaError" class="error-message">Incorrect Captcha</div>
-            </div>
-
-            <button type="submit" class="signin-btn">Sign In</button>
-
-            <div class="signup-link">
-                Don't have an account? <a href="signup.html">Sign Up</a>
-            </div>
-        </form>
-    </div>
+    <div id="app"></div>
 
     <script>
-        // Captcha Generation Class
-        class CaptchaGenerator {
-            constructor(canvas) {
-                this.canvas = canvas;
-                this.ctx = canvas.getContext('2d');
-                this.captchaText = '';
+        class RailwayApp {
+            constructor(rootElement) {
+                this.rootElement = rootElement;
+                this.state = {
+                    username: '',
+                    userId: '',
+                    password: '',
+                    captcha: '',
+                    generatedCaptcha: '',
+                    isLoggedIn: false,
+                    activeUser: ''
+                };
+                this.init();
             }
 
             generateCaptcha() {
-                // Clear previous captcha
-                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                
-                // Generate random text
-                const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-                this.captchaText = Array.from({length: 6}, () => 
-                    characters.charAt(Math.floor(Math.random() * characters.length))).join('');
-                
-                // Draw background
-                this.ctx.fillStyle = '#f0f0f0';
-                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-                
-                // Draw text with some noise
-                this.ctx.font = '30px Arial';
-                this.ctx.fillStyle = '#333';
-                
-                // Add some random lines for complexity
-                for (let i = 0; i < 5; i++) {
-                    this.ctx.beginPath();
-                    this.ctx.moveTo(Math.random() * this.canvas.width, Math.random() * this.canvas.height);
-                    this.ctx.lineTo(Math.random() * this.canvas.width, Math.random() * this.canvas.height);
-                    this.ctx.strokeStyle = 'rgba(0,0,0,0.1)';
-                    this.ctx.stroke();
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                const captchaLength = 6;
+                let result = '';
+                for (let i = 0; i < captchaLength; i++) {
+                    result += chars.charAt(Math.floor(Math.random() * chars.length));
                 }
-                
-                // Draw captcha text with slight rotation
-                this.ctx.save();
-                this.ctx.translate(20, 35);
-                this.ctx.rotate(-0.1);
-                this.ctx.fillText(this.captchaText, 0, 0);
-                this.ctx.restore();
+                this.state.generatedCaptcha = result;
+                return result;
             }
 
-            validateCaptcha(userInput) {
-                return userInput.toUpperCase() === this.captchaText;
+            renderSignInPage() {
+                return `
+                    <div class="login-container">
+                        <div class="logo"></div>
+                        <h2 class="title">Railway Connect</h2>
+                        <form id="signin-form">
+                            <div class="input-group">
+                                <input type="text" id="username" placeholder="Username" required>
+                            </div>
+                            <div class="input-group">
+                                <input type="text" id="userId" placeholder="User ID" required>
+                            </div>
+                            <div class="input-group">
+                                <input type="password" id="password" placeholder="Password" required>
+                            </div>
+                            <div class="input-group">
+                                <div class="captcha-container">
+                                    <div class="captcha-display" id="captcha-display">${this.state.generatedCaptcha}</div>
+                                    <button type="button" class="refresh-btn" id="refresh-captcha">Refresh</button>
+                                </div>
+                                <input type="text" id="captcha-input" placeholder="Enter Captcha" required>
+                            </div>
+                            <button type="submit" class="signin-btn">Sign In</button>
+                        </form>
+                    </div>
+                `;
+            }
+
+            renderHomePage() {
+                return `
+                    <div class="home-page">
+                        <div class="user-header">
+                            <div class="user-badge">Active User: ${this.state.activeUser}</div>
+                        </div>
+                        <div class="services-grid">
+                            <div class="service-card">
+                                <div class="service-icon">🕒</div>
+                                <h2>Train Schedules</h2>
+                                <p>Check real-time train timings and routes</p>
+                            </div>
+                            <div class="service-card">
+                                <div class="service-icon">🎫</div>
+                                <h2>Ticket Booking</h2>
+                                <p>Quick and secure ticket reservations</p>
+                            </div>
+                            <div class="service-card">
+                                <div class="service-icon">🌍</div>
+                                <h2>Travel Information</h2>
+                                <p>Comprehensive travel guides and updates</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            bindEvents() {
+                const form = document.getElementById('signin-form');
+                const refreshButton = document.getElementById('refresh-captcha');
+
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const username = document.getElementById('username').value;
+                    const userId = document.getElementById('userId').value;
+                    const password = document.getElementById('password').value;
+                    const captchaInput = document.getElementById('captcha-input').value;
+
+                    if (captchaInput === this.state.generatedCaptcha) {
+                        this.state.isLoggedIn = true;
+                        this.state.activeUser = userId;
+                        this.render();
+                    } else {
+                        alert('Incorrect Captcha. Please try again.');
+                        this.generateCaptcha();
+                        document.getElementById('captcha-display').textContent = this.state.generatedCaptcha;
+                    }
+                });
+
+                refreshButton.addEventListener('click', () => {
+                    this.generateCaptcha();
+                    document.getElementById('captcha-display').textContent = this.state.generatedCaptcha;
+                });
+            }
+
+            render() {
+                this.rootElement.innerHTML = this.state.isLoggedIn ? this.renderHomePage() : this.renderSignInPage();
+                if (!this.state.isLoggedIn) {
+                    this.bindEvents();
+                }
+            }
+
+            init() {
+                this.generateCaptcha();
+                this.render();
             }
         }
 
-        // Form Validation and Interactions
-        document.addEventListener('DOMContentLoaded', () => {
-            const form = document.getElementById('signinForm');
-            const username = document.getElementById('username');
-            const password = document.getElementById('password');
-            const captchaCanvas = document.getElementById('captchaCanvas');
-            const captchaInput = document.getElementById('captchaInput');
-            const refreshCaptcha = document.getElementById('refreshCaptcha');
-            const passwordToggle = document.getElementById('passwordToggle');
-
-            // Error message elements
-            const usernameError = document.getElementById('usernameError');
-            const passwordError = document.getElementById('passwordError');
-            const captchaError = document.getElementById('captchaError');
-
-            // Create Captcha Generator
-            const captchaGenerator = new CaptchaGenerator(captchaCanvas);
-            captchaGenerator.generateCaptcha();
-
-            // Refresh Captcha
-            refreshCaptcha.addEventListener('click', () => {
-                captchaGenerator.generateCaptcha();
-                captchaInput.value = '';
-            });
-
-            // Password Toggle Visibility
-            passwordToggle.addEventListener('click', () => {
-                if (password.type === 'password') {
-                    password.type = 'text';
-                } else {
-                    password.type = 'password';
-                }
-            });
-
-            // Validation Functions
-            const validateUsername = () => {
-                const isValid = username.value.trim() !== '';
-                usernameError.style.display = isValid ? 'none' : 'block';
-                return isValid;
-            };
-
-            const validatePassword = () => {
-                const isValid = password.value.trim() !== '';
-                passwordError.style.display = isValid ? 'none' : 'block';
-                return isValid;
-            };
-
-            const validateCaptcha = () => {
-                const isValid = captchaGenerator.validateCaptcha(captchaInput.value);
-                captchaError.style.display = isValid ? 'none' : 'block';
-                return isValid;
-            };
-
-            // Real-time validation
-            username.addEventListener('input', validateUsername);
-            password.addEventListener('input', validatePassword);
-
-            // Form Submission
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-
-                const isUsernameValid = validateUsername();
-                const isPasswordValid = validatePassword();
-                const isCaptchaValid = validateCaptcha();
-
-                if (isUsernameValid && isPasswordValid && isCaptchaValid) {
-                    // Simulate sign-in process
-                    alert('Sign In Successful!');
-                    // Here you would typically send data to backend for authentication
-                }
-            });
-        });
+        // Initialize the app
+        const app = new RailwayApp(document.getElementById('app'));
     </script>
 </body>
 </html>
