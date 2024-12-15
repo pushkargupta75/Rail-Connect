@@ -3,118 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <title>Char Dham Yatra - Spiritual Journey Planner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <style>
         body {
-            background: linear-gradient(135deg, #f6f8f9 0%, #e5ebee 100%);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e0f2f1, #b2dfdb);
+            font-family: 'Roboto', sans-serif;
+            color: #333; /* Dark text for better contrast */
         }
-        .dham-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        .location-card {
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         }
-        .dham-card:hover {
+        .location-card:hover {
             transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-        .animate-fade-in {
-            animation: fadeIn 1s ease-out;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        .animate-fade-in {
+            animation: fadeIn 1s ease-out;
+        }
+        .glassy-background {
+            background: rgba(255,255,255,0.8);
+            backdrop-filter: blur(10px);
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .button-gradient {
+            background: linear-gradient(to right, #4CAF50, #8BC34A);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background 0.3s ease-in-out;
+        }
+        .button-gradient:hover {
+            background: linear-gradient(to right, #388E3C, #4CAF50);
+        }
+        .text-highlight {
+            color: #004d40;
+        }
     </style>
 </head>
-<body class="bg-gray-100 p-6">
+<body class="min-h-screen p-6">
     <div class="container mx-auto">
-        <h1 class="text-4xl font-bold text-center text-blue-800 mb-8 animate-fade-in">Char Dham Yatra - Spiritual Pilgrimage</h1>
-        
+        <h1 class="text-5xl font-bold text-center text-gray-800 mb-8 animate-fade-in">
+            Complete Your Char Dham Yatra
+        </h1>
+
         <!-- Dham Selection Section -->
-        <div class="grid md:grid-cols-4 gap-6">
-            <!-- Badrinath -->
-            <div class="dham-card bg-white rounded-lg shadow-lg p-4 text-center">
+        <div class="grid md:grid-cols-4 gap-8 mb-12">
+             <!-- Badrinath -->
+            <div class="location-card bg-white rounded-lg p-4 text-center">
                 <img src="badrinath.jpeg" alt="Badrinath" class="w-full h-48 object-cover rounded-lg mb-4">
-                <h2 class="text-xl font-semibold text-blue-700">Badrinath</h2>
+                <h2 class="text-2xl font-semibold text-teal-800">Badrinath</h2>
                 <p class="text-gray-600">Located in Uttarakhand, dedicated to Lord Vishnu</p>
-                <button onclick="selectDham('Badrinath')" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Select</button>
+                <button onclick="selectDestination('Badrinath')" class="mt-4 button-gradient hover:bg-teal-600">
+                    Select
+                </button>
             </div>
 
-            <!-- Kedarnath -->
-            <div class="dham-card bg-white rounded-lg shadow-lg p-4 text-center">
+           <!-- Kedarnath -->
+            <div class="location-card bg-white rounded-lg p-4 text-center">
                 <img src="kedarnath.jpeg" alt="Kedarnath" class="w-full h-48 object-cover rounded-lg mb-4">
-                <h2 class="text-xl font-semibold text-green-700">Kedarnath</h2>
+                <h2 class="text-2xl font-semibold text-green-800">Kedarnath</h2>
                 <p class="text-gray-600">Nestled in the Himalayas, dedicated to Lord Shiva</p>
-                <button onclick="selectDham('Kedarnath')" class="mt-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Select</button>
+                <button onclick="selectDestination('Gulmarg')" class="mt-4 button-gradient hover:bg-green-600">
+                    Select
+                </button>
             </div>
 
             <!-- Gangotri -->
-            <div class="dham-card bg-white rounded-lg shadow-lg p-4 text-center">
+            <div class="location-card bg-white rounded-lg p-4 text-center">
                 <img src="gangotri.jpeg" alt="Gangotri" class="w-full h-48 object-cover rounded-lg mb-4">
-                <h2 class="text-xl font-semibold text-teal-700">Gangotri</h2>
+                <h2 class="text-2xl font-semibold text-teal-700">Gangotri</h2>
                 <p class="text-gray-600">Origin of the sacred River Ganges</p>
-                <button onclick="selectDham('Gangotri')" class="mt-4 bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600">Select</button>
+                <button onclick="selectDestination('Gangotri')" class="mt-4 button-gradient hover:bg-teal-600">
+                    Select
+                </button>
             </div>
 
             <!-- Yamunotri -->
-            <div class="dham-card bg-white rounded-lg shadow-lg p-4 text-center">
+            <div class="location-card bg-white rounded-lg p-4 text-center">
                 <img src="yamunotri.jpeg" alt="Yamunotri" class="w-full h-48 object-cover rounded-lg mb-4">
-                <h2 class="text-xl font-semibold text-red-700">Yamunotri</h2>
+                <h2 class="text-2xl font-semibold text-indigo-800">Yamunotri</h2>
                 <p class="text-gray-600">Source of the River Yamuna</p>
-                <button onclick="selectDham('Yamunotri')" class="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Select</button>
+                <button onclick="selectDestination('Yamunotri')" class="mt-4 button-gradient hover:bg-indigo-600">
+                    Select
+                </button>
             </div>
         </div>
 
         <!-- Trip Planner Section -->
-        <div id="tripPlannerSection" class="mt-12 hidden">
-            <div class="bg-white rounded-lg shadow-lg p-6">
-                <h2 class="text-2xl font-bold mb-6 text-center">Plan Your Spiritual Journey</h2>
-                
-                <div class="grid md:grid-cols-2 gap-6">
+        <div id="tripPlannerSection" class="hidden animate-fade-in">
+            <div class="glassy-background shadow-lg p-8">
+                <h2 class="text-3xl font-bold text-center mb-8 text-teal-900">
+                    Craft Your Char Dham Journey
+                </h2>
+
+                <div class="grid md:grid-cols-2 gap-8">
                     <!-- Trip Details Form -->
                     <div>
-                        <h3 class="text-xl font-semibold mb-4">Trip Details</h3>
+                        <div class="mb-6">
+                            <h3 class="text-xl font-semibold mb-4 text-teal-700">Selected Destinations</h3>
+                            <div id="selectedDestinationsDisplay" class="flex flex-wrap gap-2"></div>
+                        </div>
+
                         <form id="tripForm" class="space-y-4">
                             <div>
-                                <label class="block mb-2">Selected Dhams:</label>
-                                <div id="selectedDhamsDisplay" class="text-gray-700"></div>
+                                <label class="block mb-2">Number of Travelers</label>
+                                <input 
+                                    type="number" 
+                                    id="travelerCount" 
+                                    min="1" 
+                                    max="10" 
+                                    class="w-full px-4 py-2 border rounded-lg"
+                                    onchange="calculateTripCost()"
+                                >
                             </div>
-                            
-                            <div>
-                                <label class="block mb-2">Number of People</label>
-                                <input type="number" id="peopleCount" min="1" max="10" 
-                                    class="w-full px-3 py-2 border rounded" 
-                                    onchange="calculateTotalCost()">
-                            </div>
-                            
+
                             <div>
                                 <label class="block mb-2">Travel Mode</label>
-                                <select id="travelMode" class="w-full px-3 py-2 border rounded" onchange="calculateTotalCost()">
-                                    <option value="train">Train</option>
-                                    <option value="bus">Bus</option>
-                                    <option value="flight">Flight</option>
+                                <select 
+                                    id="travelMode" 
+                                    class="w-full px-4 py-2 border rounded-lg"
+                                    onchange="calculateTripCost()"
+                                >
+                                    <option value="train">Sleeper Train</option>
+                                    <option value="flight">1st AC</option>
+                                    <option value="bus">3rd AC</option>
                                 </select>
                             </div>
-                            
+
                             <div>
-                                <label class="block mb-2">Accommodation Type</label>
-                                <select id="accommodation" class="w-full px-3 py-2 border rounded" onchange="calculateTotalCost()">
+                                <label class="block mb-2">Accommodation</label>
+                                <select 
+                                    id="accommodationType" 
+                                    class="w-full px-4 py-2 border rounded-lg"
+                                    onchange="calculateTripCost()"
+                                >
                                     <option value="budget">Budget Hotel</option>
                                     <option value="standard">Standard Hotel</option>
-                                    <option value="luxury">Luxury Hotel</option>
+                                    <option value="luxury">Luxury Resort</option>
                                 </select>
+                            </div>
+
+                            <div>
+                                <label class="block mb-2">Trip Duration (Days)</label>
+                                <input 
+                                    type="number" 
+                                    id="tripDuration" 
+                                    min="3" 
+                                    max="10" 
+                                    class="w-full px-4 py-2 border rounded-lg"
+                                    onchange="calculateTripCost()"
+                                >
                             </div>
                         </form>
                     </div>
 
                     <!-- Cost Breakdown -->
                     <div>
-                        <h3 class="text-xl font-semibold mb-4">Trip Cost Breakdown</h3>
-                        <div id="costBreakdown" class="bg-gray-100 p-4 rounded">
-                            <p>Total People: <span id="displayPeople">0</span></p>
-                            <p>Travel Mode: <span id="displayTravelMode">-</span></p>
-                            <p>Accommodation: <span id="displayAccommodation">-</span></p>
-                            <hr class="my-2">
-                            <h4 class="font-bold text-lg">Total Trip Cost: ₹<span id="totalCost">0</span></h4>
+                        <div class="bg-white rounded-lg p-6 shadow-md">
+                            <h3 class="text-2xl font-bold mb-6 text-center text-teal-900">Trip Cost Breakdown</h3>
+                            
+                            <div class="space-y-3">
+                                <div class="flex justify-between">
+                                    <span>Travelers:</span>
+                                    <span id="displayTravelers">0</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Travel Mode:</span>
+                                    <span id="displayTravelMode">-</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Accommodation:</span>
+                                    <span id="displayAccommodation">-</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Duration:</span>
+                                    <span id="displayDuration">0 Days</span>
+                                </div>
+                                <hr>
+                                <div class="flex justify-between font-bold text-xl">
+                                    <span>Total Trip Cost:</span>
+                                    <span>₹ <span id="totalTripCost">0</span></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-6 text-center">
+                            <button 
+                                onclick="bookTrip()" 
+                                class="bg-teal-600 text-white px-8 py-3 rounded-lg hover:bg-teal-700 transition-all"
+                            >
+                                Book Your Trip
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -123,50 +214,75 @@
     </div>
 
     <script>
-        let selectedDhams = [];
+        let selectedDestinations = [];
 
-        function selectDham(dham) {
-            if (!selectedDhams.includes(dham)) {
-                selectedDhams.push(dham);
+        function selectDestination(dham) {
+            if (!selectedDestinations.includes(dham)) {
+                selectedDestinations.push(dham);
                 document.getElementById('tripPlannerSection').classList.remove('hidden');
-                updateSelectedDhamsDisplay();
+                updateSelectedDestinationsDisplay();
             }
         }
 
-        function updateSelectedDhamsDisplay() {
-            const display = document.getElementById('selectedDhamsDisplay');
-            display.innerHTML = selectedDhams.map(dham => 
-                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded mr-2">${dham}</span>
-            ).join('');
+        function updateSelectedDestinationsDisplay() {
+            const display = document.getElementById('selectedDestinationsDisplay');
+            display.innerHTML = selectedDestinations.map(dest => 
+                `<span class="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm">
+                    ${dham}
+                </span>`
+            ).join(' ');
         }
 
-        function calculateTotalCost() {
-            const peopleCount = document.getElementById('peopleCount').value || 0;
+        function calculateTripCost() {
+            const travelers = document.getElementById('travelerCount').value || 0;
             const travelMode = document.getElementById('travelMode').value;
-            const accommodation = document.getElementById('accommodation').value;
+            const accommodationType = document.getElementById('accommodationType').value;
+            const duration = document.getElementById('tripDuration').value || 0;
 
             // Base prices
-            const basePrices = {
-                train: 5000,
-                bus: 4000,
-                flight: 8000
+            const travelPrices = {
+                train: 3000,
+                flight: 8000,
+                bus: 2000
             };
 
-            const accommodationMultiplier = {
-                budget: 1,
-                standard: 1.5,
-                luxury: 2.5
+            const accommodationPrices = {
+                budget: 1500,
+                standard: 3000,
+                luxury: 6000
             };
 
-            const travelPrice = basePrices[travelMode] * peopleCount;
-            const accommodationPrice = 3000 * accommodationMultiplier[accommodation] * peopleCount;
-            const totalCost = travelPrice + accommodationPrice * selectedDhams.length;
+            const travelCost = travelPrices[travelMode] * travelers;
+            const accommodationCost = accommodationPrices[accommodationType] * travelers * duration;
+            const totalCost = travelCost + accommodationCost;
 
-            document.getElementById('displayPeople').textContent = peopleCount;
-            document.getElementById('displayTravelMode').textContent = travelMode.charAt(0).toUpperCase() + travelMode.slice(1);
-            document.getElementById('displayAccommodation').textContent = accommodation.charAt(0).toUpperCase() + accommodation.slice(1);
-            document.getElementById('totalCost').textContent = totalCost.toLocaleString();
+            // Update display
+            document.getElementById('displayTravelers').textContent = travelers;
+            document.getElementById('displayTravelMode').textContent = 
+                travelMode.charAt(0).toUpperCase() + travelMode.slice(1);
+            document.getElementById('displayAccommodation').textContent = 
+                accommodationType.charAt(0).toUpperCase() + accommodationType.slice(1);
+            document.getElementById('displayDuration').textContent = duration + ' Days';
+            document.getElementById('totalTripCost').textContent = totalCost.toLocaleString();
+        }
+
+        function bookTrip() {
+            alert('Trip Booked Successfully! We will contact you soon.');
         }
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
